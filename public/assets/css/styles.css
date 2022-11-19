@@ -1,0 +1,137 @@
+:root {
+
+  --first-color: #00ff95;
+  --first-color-light: #00ff95a9;
+  --body-color: #4F555E;
+  --container-color: #32353b;
+}
+
+
+
+body {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  margin: 0;
+}
+
+
+
+/* header */
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100% - 230px);
+  height: 60px;
+  background-color: var(--container-color);
+}
+
+
+.header_cont {
+  width: 100%;
+  height: 100%;
+
+}
+
+/* hidden menue */
+
+.menu {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  height: 100%;
+  width: calc(100% - 230px);
+  background-color: #2f3136;
+  z-index: var(--z-fixed);
+  transition: .4s;
+  display: none;
+}
+
+#closes {
+  color: white;
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 200,
+    'opsz' 48
+}
+
+#closes:hover {
+  color: rgba(255, 255, 255, 0.658);
+  cursor: pointer;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 300,
+    'GRAD' 200,
+    'opsz' 48
+}
+
+
+/* side nav */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 230px;
+  background-color: #2f3136;
+  z-index: var(--z-fixed);
+  left: 0;
+}
+
+.nav_bot {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 53px;
+  width: 230px;
+  background-color: #292b2f;
+  display: flex;
+  align-items: center;
+
+}
+
+.nav_img {
+  width: 35px;
+  height: 35px;
+  margin-left: 9px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#username {
+  margin-left: 10px;
+  font-size: 13px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+
+#setting{
+  color: white;
+  position: absolute;
+  right: 14.5px;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 200,
+    'opsz' 48
+}
+
+
+#setting:hover{
+  color: rgba(255, 255, 255, 0.658);
+  cursor: pointer;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 300,
+    'GRAD' 200,
+    'opsz' 48
+}
+
+

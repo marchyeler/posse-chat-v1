@@ -1,0 +1,31 @@
+<html>
+
+<body>
+    <script type="module">
+        import PocketBase from './dist/pocketbase.es.mjs'
+
+        const client = new PocketBase('http://127.0.0.1:8090');
+
+        // (Optionally) authenticate
+        const records = await client.records.getFullList('msg_data', 200 /* batch size */, {
+            sort: '-created',
+        });
+       
+
+        for (let i = 0; i < records.length; i++) {
+        console.log(records[i].msg);
+        }
+        // Subscribe to changes in any record from the "demo" collection
+        client.realtime.subscribe('msg_data', function (e) {
+            console.log(e.record.msg);
+        });
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>

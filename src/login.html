@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #111827;
+            margin: 0;
+
+        }
+
+        .login {
+            position: absolute;
+            top: 30px;
+            right: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+            width: 500px;
+            height: 379px;
+            background-color: #37393F;
+            border-radius: 5px;
+        }
+
+        .container {
+            padding: 0px 30px 0px 30px;
+            position: absolute;
+            width: 440px;
+            top: 85px;
+        }
+
+        h1 {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 0px;
+            margin-top: 25px;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            cursor: default;
+        }
+
+        .labl {
+            font-size: 15px;
+            color: #a3a6aa;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0px 20px 0px;
+            display: inline-block;
+            border: none;
+            box-sizing: border-box;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #212225;
+            color: white;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        button {
+            background-color: #a341e4;
+            color: white;
+            position: absolute;
+            top: 207px;
+            margin: 0px 0px 0px 0px;
+            height: 44px;
+            width: 440px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            right: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: #8829c7;
+        }
+
+
+        .logint {
+            font-size: 15px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+
+        }
+
+
+        .forgot {
+            position: absolute;
+            top: 162px;
+            font-size: 15px;
+            font-family: 'Montserrat', sans-serif;
+            color: #40ace2;
+            cursor: pointer;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+
+        .reg {
+            position: absolute;
+            top: 255px;
+            font-size: 15px;
+            font-family: 'Montserrat', sans-serif;
+            color: #a3a6aa;
+            cursor: default;
+        }
+
+        .regs {
+            position: absolute;
+            left: 172px;
+            top: 255px;
+            font-size: 15px;
+            font-family: 'Montserrat', sans-serif;
+            color: #40ace2;
+            cursor: pointer;
+        }
+
+        .regs:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body id="particles">
+    <div class="login">
+        <h1>Welcome back!</h1>
+        <form action="javascript:logins()" class="logf">
+            <div class="container">
+                <label for="eml_t">
+                    <div class="labl" id="eml_t">EMAIL</div>
+                </label>
+                <input id="eml" type="text" name="email" required>
+
+                <label for="psw">
+                    <div class="labl" id="pswd_t">PASSWORD</div>
+                </label>
+                <input id="psw" type="password" name="psw" required>
+                <div class="forgot">Forgot Password?</div>
+
+                <button type="submit">
+                    <div class="logint">Log in</div>
+                </button>
+                <div class="reg">Need an account?</div>
+                <div class="regs">Register</div>
+            </div>
+        </form>
+        <script src="/dist/pocketbase.umd.js"></script>
+
+        <script>
+            const client = new PocketBase('http://127.0.0.1:8090');
+
+            client.authStore.loadFromCookie(document.cookie);
+
+            client.authStore.onChange(() => {
+                document.cookie = client.authStore.exportToCookie({ httpOnly: false });
+            })
+
+            async function logins() {
+                var email = document.getElementById('eml').value;
+                var pass = document.getElementById('psw').value;
+
+                try {
+                    const result = await await client.users.authViaEmail(email, pass);
+                    window.location.replace("http://localhost:3000/app");
+                } catch (error) {
+                    document.getElementById('eml_t').innerHTML = "EMAIL - Login or password is invalid";
+                    document.getElementById('eml_t').style.color = "#f38688";
+                    document.getElementById('pswd_t').innerHTML = "PASSWORD - Login or password is invalid";
+                    document.getElementById('pswd_t').style.color = "#f38688";
+                    console.log(error);
+                }
+            }
+        </script>
+    </div>
+    <script src="/assets/js/tsparticles.js"></script>
+    <script src="/assets/js/part.js"></script>
+</body>
+
+</html>
