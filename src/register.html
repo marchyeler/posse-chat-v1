@@ -18,6 +18,31 @@
 
         }
 
+        .top {
+            position: absolute;
+            top: -85px;
+            z-index: -1;
+            right: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+            width: 500px;
+            height: 451px;
+            background-color: #37393F;
+            border-radius: 5px;
+        }
+
+        .check {
+            position: absolute;
+            top: 65px;
+            width: 70px;
+            height: 70px;
+            right: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
         .login {
             position: absolute;
             top: 30px;
@@ -26,7 +51,7 @@
             margin-right: auto;
             margin-left: auto;
             width: 500px;
-            height: 469px;
+            height: 451px;
             background-color: #37393F;
             border-radius: 5px;
         }
@@ -46,6 +71,20 @@
             font-family: 'Montserrat', sans-serif;
             color: white;
             cursor: default;
+        }
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 0px;
+            margin-top: 25px;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            cursor: default;
+        }
+
+        .bot {
+            margin-top: 100px;
         }
 
         .labl {
@@ -102,14 +141,13 @@
             font-size: 15px;
             color: white;
             font-family: 'Montserrat', sans-serif;
-
         }
 
 
 
         .reg {
             position: absolute;
-            top: 344px;
+            top: 317px;
             font-size: 15px;
             font-family: 'Montserrat', sans-serif;
             color: #40ace2;
@@ -124,7 +162,9 @@
 </head>
 
 <body id="particles">
+
     <div class="login">
+
         <h1>Create an account</h1>
         <form action="javascript:register()" class="logf">
             <div class="container">
@@ -148,12 +188,19 @@
                     <div class="contin">Continue</div>
                 </button>
                 <div class="reg">Already have an account?</div>
+                <div id="conf" class="top">
+                    <h2>Account Creation Successful</h2>
+                    <img class="check" src="assets/img/check.png">
+                    <h2 class="bot">Please confirm your email.</h2>
+                    <h2>An Email a verification has been sent.</h2>
+                    <button class="rtn" onclick="">Return to Login</button>
+                </div>
             </div>
         </form>
         <script src="/dist/pocketbase.umd.js"></script>
 
         <script>
-            const client = new PocketBase('http://127.0.0.1:8090');
+            const pb = new PocketBase('http://127.0.0.1:8090');
 
             //register function
             async function register() {
@@ -169,54 +216,50 @@
                 var pusername = document.getElementById('user').value;
                 var pass = document.getElementById('psw').value;
 
-                //check if username exists
-                const records = await client.records.getFullList('profiles', 200 /* batch size */, {
-                    filter: `username = '${pusername}'`,
-                });
+                //run async create user
+                try {
+                    const data = {
+                        "username": pusername,
+                        "email": email,
+                        "emailVisibility": true,
+                        "password": pass,
+                        "passwordConfirm": pass,
+                        "name": "test"
+                    };
 
-                if (records.length == 0) {
-                    console.log(records.length);
+                    const record = await pb.collection('users').create(data);
 
-                    //run async create user
-                    try {
-                        const user = await client.users.create({
-                            email: email,
-                            password: pass,
-                            passwordConfirm: pass,
-                        });
+                    // (optional) send an email verification request
+                    await pb.collection('users').requestVerification('test@example.com');
+                    document.getElementById("conf").style.zIndex = "1";
+                    //window.location.replace("http://localhost:3000/app");
+                } catch (error) {
 
-                        const updatedProfile = await client.records.update('profiles', user.profile.id, {
-                            username: pusername,
-                        });
-
-                        await client.users.requestVerification(user.email);
-
-                        //window.location.replace("http://localhost:3000/app");
-                    } catch (error) {
-                        //email registered error
-
-                        if ("email" in error.data.data) {
-                            document.getElementById('eml_t').innerHTML = "EMAIL - Email already registered";
-                            document.getElementById('eml_t').style.color = "#f38688";
-
-                        }
-                        //password short error
-                        if ("password" in error.data.data) {
-                            document.getElementById('pswd_t').innerHTML = "PASSWORD - Pasword length must be greater than 8";
-                            document.getElementById('pswd_t').style.color = "#f38688";
-                        }
-
+                    //register error catch
+                    if ("email" in error.data.data) {
+                        document.getElementById('eml_t').innerHTML = "EMAIL - Email already registered";
+                        document.getElementById('eml_t').style.color = "#f38688";
 
                     }
 
-                    //username exists error
-                } else {
-                    document.getElementById('user_t').innerHTML = "USERNAME - Username already registered";
-                    document.getElementById('user_t').style.color = "#f38688";
+                    if ("username" in error.data.data) {
+                        document.getElementById('user_t').innerHTML = "USERNAME - Username already registered";
+                        document.getElementById('user_t').style.color = "#f38688";
+
+                    }
+
+                    //password short error
+                    if ("password" in error.data.data) {
+                        document.getElementById('pswd_t').innerHTML = "PASSWORD - Pasword length must be greater than 8";
+                        document.getElementById('pswd_t').style.color = "#f38688";
+                    }
+
+
                 }
 
             }
         </script>
+
 
     </div>
     <script src="/assets/js/tsparticles.js"></script>

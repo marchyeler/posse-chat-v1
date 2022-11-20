@@ -170,12 +170,12 @@
         <script src="/dist/pocketbase.umd.js"></script>
 
         <script>
-            const client = new PocketBase('http://127.0.0.1:8090');
+            const pb = new PocketBase('http://127.0.0.1:8090');
 
-            client.authStore.loadFromCookie(document.cookie);
+            pb.authStore.loadFromCookie(document.cookie);
 
-            client.authStore.onChange(() => {
-                document.cookie = client.authStore.exportToCookie({ httpOnly: false });
+            pb.authStore.onChange(() => {
+                document.cookie = pb.authStore.exportToCookie({ httpOnly: false }, key = 'pb_auth')
             })
 
             async function logins() {
@@ -183,8 +183,13 @@
                 var pass = document.getElementById('psw').value;
 
                 try {
-                    const result = await await client.users.authViaEmail(email, pass);
-                    window.location.replace("http://localhost:3000/app");
+
+                    const authData = await pb.collection('users').authWithPassword(
+                        email,
+                        pass,
+                    );
+
+                    //window.location.replace("http://localhost:3000/app");
                 } catch (error) {
                     document.getElementById('eml_t').innerHTML = "EMAIL - Login or password is invalid";
                     document.getElementById('eml_t').style.color = "#f38688";
