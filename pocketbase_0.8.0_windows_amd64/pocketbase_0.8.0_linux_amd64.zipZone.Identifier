@@ -1,0 +1,3 @@
+[ZoneTransfer]
+ZoneId=3
+HostUrl=https://objects.githubusercontent.com/github-production-release-asset-2e65be/510607652/f93a4c30-39eb-407a-9eb0-7c8ceef04a5a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20221120%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221120T034747Z&X-Amz-Expires=300&X-Amz-Signature=c06830ead74800447679cf63fbe944590e506ecd43555de89c6321c329e39234&X-Amz-SignedHeaders=host&actor_id=65318265&key_id=0&repo_id=510607652&response-content-disposition=attachment%3B%20filename%3Dpocketbase_0.8.0_linux_amd64.zip&response-content-type=application%2Foctet-stream
